@@ -224,13 +224,14 @@ int main()
 	displayList(head);
 
 	cout << "Searching for 7" << endl;
-	searchNode(head, 7);
+	searchNode(head, 4);
 
 	cout << "Searching for 0" << endl;
 	searchNode(head, 0);
 
 	deAllocateMemory(head);
 
-	
+	///okkk
+
 	return 0;
 }
