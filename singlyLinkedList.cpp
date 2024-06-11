@@ -4,18 +4,12 @@ using namespace std;
 class node{
 	public:
 	int data;
-	node* next; 
+	node* next;
 };
 
 
 void displayList(node* head)
 {
-	/*while (head != NULL)
-	{
-		node* temp = head;
-		head = head->next;
-		cout << temp->data << endl;
-	}*/
 
 	if (head == nullptr) 
 	{
@@ -61,7 +55,7 @@ void insertAtBeginning(node*& head, int data)
 	head = newNode;
 }
 
-void insertAtGivenIndex(node* head, int index, int data)
+void insertAtGivenIndex(node* &head, int index, int data)
 {
 	node* newNode = new node;
 	newNode->data = data;
@@ -81,6 +75,8 @@ void insertAtGivenIndex(node* head, int index, int data)
 	{
 		currentHead = currentHead->next;
 	}
+
+	if (currentHead->next == nullptr ) return;
 
 	newNode->next = currentHead->next;
 	currentHead->next = newNode;
@@ -142,7 +138,12 @@ void deleteNodeAtGivenIndex(node*& head, int index)
 	currentHead->next = currentHead->next->next;
 	delete nodeToDelete;
 
+}
 
+void deleteNodeWithSpecificValue(node*& head,int key)
+{
+	///isko kal dekhtay hain
+	 
 }
 
 
@@ -167,6 +168,74 @@ void searchNode(node* head, int key)
 	cout << endl;
 }
 
+void sortList(node*&head, int type)///type=1=ascending
+{
+	/*
+	func(array, type)  type can be 1 or -1
+
+	for()
+	{
+		for()
+		{
+			if(a<type*b) swap(a,b) //ye ascendin karay ga agr type 1 ho or descending agr type -1 ho
+		}
+	}
+	
+	
+	*/
+
+}
+
+void reverseList(node*& head)
+{
+
+}
+
+void updateNodeDateByIndex(node* head, int index)
+{
+
+}
+
+void updateNodeDateByValue(node* head, int key)
+{
+
+}
+
+void lengthOfList(node* head)
+{
+
+}
+
+void findMiddleNode(node* head)
+{
+
+}
+
+void findNthNodeFromEnd(node* head)
+{
+
+}
+
+void displayReverse(node* head)
+{
+
+}
+
+void isListPalindrome(node* head)
+{
+
+}
+
+void rotateListLeft(node* head, int k)
+{
+
+}
+
+void rotateListRight(node* head, int k)
+{
+
+}
+
 void deAllocateMemory(node*& head)
 {
 	while (head != NULL)
@@ -178,7 +247,6 @@ void deAllocateMemory(node*& head)
 
 	head = nullptr;
 }
-
 
 
 int main()
@@ -204,6 +272,8 @@ int main()
 
 
 	insertAtGivenIndex(head, 3, 22);
+	insertAtGivenIndex(head, 2, 17);
+	insertAtGivenIndex(head, 4, 45);
 
 	cout << "Inserting 22 At Index 3: " << endl;
 	displayList(head);
@@ -229,9 +299,33 @@ int main()
 	cout << "Searching for 0" << endl;
 	searchNode(head, 0);
 
+	insertAtGivenIndex(head, 0, 0);
+	insertAtGivenIndex(head, 3, 0); ///if i write this line, then it gets stuck somewhere in infinity loop, but this function is working as used above 
+	
+	cout << "Inserting 0s to check function below:" << endl;
+	displayList(head);
+
+
+	///========kal dekhun ga========================
+	/*cout << "Deleting Nodes With Specific Value(0):" << endl; 
+	deleteNodeWithSpecificValue(head, 0);
+	displayList(head);*/
+	///============================================
+
+
+	insertAtGivenIndex(head, 12, 26);
+	cout << "Inserting 26 At Index 12 Which is out of Scope(26 should not be added at end):" << endl;
+	displayList(head);
+
+	insertAtGivenIndex(head, 9, 26);
+
+	cout << "Inserting 26 At Index 9 (26 should be added at end):" << endl;
+	displayList(head);
+
+
 	deAllocateMemory(head);
 
-	
+
 
 	return 0;
 }
