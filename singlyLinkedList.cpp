@@ -1,4 +1,5 @@
 #include<iostream>
+#include<vector>
 using namespace std;
 
 class node{
@@ -57,6 +58,11 @@ void insertAtBeginning(node*& head, int data)
 
 void insertAtGivenIndex(node* &head, int index, int data)
 {
+	if (index > lengthOfList(head) - 1)
+	{
+		cout << "Invalid Index" << endl << endl;
+		return;
+	}
 	node* newNode = new node;
 	newNode->data = data;
 	newNode->next = nullptr;
@@ -80,20 +86,26 @@ void insertAtGivenIndex(node* &head, int index, int data)
 
 	newNode->next = currentHead->next;
 	currentHead->next = newNode;
+	cout << "Value Inserted" << endl << endl;
 }
 
 
 int lengthOfList(node* head)
 {
+	if (head == NULL) return 0;
 	int length = 0;
 	for (; head != NULL && (head = head->next); length++);
 
-	return length;
+	return length+1;
 }
 
 void deleteLastNode(node* &head)
 {
-	if (head == nullptr) return;
+	if (head == nullptr) 
+	{
+		cout << "List Is Empty" << endl << endl;
+		return;
+	}
 	
 	if (head->next == nullptr) {
 		delete head;
@@ -111,25 +123,39 @@ void deleteLastNode(node* &head)
 
 	previousNode->next = nullptr;
 	delete currentHead;
+	cout << "Last Node Deleted" << endl << endl;
 }
 
 void deleteFirstNode(node*& head)
 {
-	if (head == nullptr) return;
+
+	if (head == nullptr)
+	{
+		cout << "List Is Empty" << endl << endl;
+		return;
+	}
 
 	node* temp = head;
 	head = head->next;
 	delete temp;
+	cout << "First Node Deleted" << endl << endl;
+
 }
+
 
 void deleteNodeAtGivenIndex(node*& head, int index)
 {
 
-	if (head == nullptr) return;														///if list is empty
+
+	if (head == nullptr)
+	{
+		cout << "List Is Empty" << endl << endl;
+		return;
+	}												
 
 	node* currentHead = head;
 
-	if (index == 0)																		///delete first node
+	if (index == 0)																		
 	{
 		head = head->next;
 		delete currentHead;
@@ -146,18 +172,9 @@ void deleteNodeAtGivenIndex(node*& head, int index)
 	node* nodeToDelete = currentHead->next;
 	currentHead->next = currentHead->next->next;
 	delete nodeToDelete;
+	cout << "Node Deleted" << endl << endl;
 
 }
-
-
-void deleteNodeWithSpecificValue(node*& head,int key)
-{
-	///isko kal dekhtay hain
-	 
-}
-
-
-
 
 
 void searchNode(node* head, int key)
@@ -183,31 +200,42 @@ void searchNode(node* head, int key)
 
 void sortList(node*&head, int type)///type=1=ascending
 {
-	/*
-	func(array, type)  type can be 1 or -1
+	if (head == NULL) return;
+	int length = lengthOfList(head);
 
-	for()
+	for (int i = 0; i < length; i++)
 	{
-		for()
+		bool found = false;
+		node* current = head;
+		node* NextNode = head->next;
+		
+		for (int j = 0; j < length - 1- i; j++)
 		{
-			if(a<type*b) swap(a,b) //ye ascendin karay ga agr type 1 ho or descending agr type -1 ho
+			NextNode = current->next;
+			if ((type == 1 && current->data > NextNode->data) || (type == -1 && current->data < NextNode->data))
+			{
+				int temp = current->data;
+				current->data = NextNode->data;
+				NextNode->data = temp;
+				found = true;
+			}
+			current = NextNode;
+			NextNode = NextNode->next;
 		}
+		if (!found) return;
 	}
-	
-	
-	*/
-
 }
 
-void reverseList(node*& head)
-{
 
-}
 
 void updateNodeDataByIndex(node* head, int index, int data)
 {
+	if (head == NULL)
+	{
+		cout << "List Is Empty..!" << endl << endl;
+		return;
+	}
 	node* currentHead = head;
-	
 	int i = 0;
 	
 	while (currentHead != NULL && i++ < index)
@@ -216,13 +244,17 @@ void updateNodeDataByIndex(node* head, int index, int data)
 	}
 
 	if (currentHead == NULL ) return;
-
 	currentHead->data = data;
+	cout << "Node Updated!" << endl << endl;
 }
 
 void updateNodeDataByValue(node* head, int key, int data)
 {
-	if (key == data) return; ///else it will go in infinite loop
+	if (head == NULL)
+	{
+		cout << "List Is Empty..!" << endl << endl;
+		return;
+	}
 
 	int i = 0;
 	node* currentHead = head;
@@ -231,14 +263,12 @@ void updateNodeDataByValue(node* head, int key, int data)
 		if (currentHead->data == key)
 		{
 			updateNodeDataByIndex(head, i, data);
-			//currentHead = head;
 		}
 		i++;
 		currentHead = currentHead->next;
 	}
-
+	cout << "Node Updated!" << endl << endl;
 }
-
 
 void findMiddleNode(node* head)
 {
@@ -277,26 +307,87 @@ void findNthNodeFromEnd(node* head,int N)
 
 }
 
-void displayReverse(node* head)
-{
 
+void deleteList(node*& head);
+
+void deAllocateMemory(node*& head);
+
+void reverseList(node*& head)
+{
+	if (head == NULL) return;
+	node* newList = nullptr;
+	node* currentHead = head;
+	int length = lengthOfList(head);
+	for (int i = 0; i < length; i++)
+	{
+		insertAtBeginning(newList, currentHead->data);
+		currentHead = currentHead->next;
+	}
+	deAllocateMemory(head);
+	head = newList;
 }
 
-void isListPalindrome(node* head)
+void isListPalindrome(node*& head)
 {
+	if (head == NULL) return;
+	node* newList = nullptr;
+	node* currentHead = head;
+	int length = lengthOfList(head);
+	for (int i = 0; i < length; i++)
+	{
+		insertAtBeginning(newList, currentHead->data);
+		currentHead = currentHead->next;
+	}
 
+	for (int i = 0; i < length / 2; i++)
+	{
+		if (head->data != newList->data)
+		{
+			cout << "Not A Palindrome" << endl << endl;
+			return;
+		}
+	}
+	cout << "Is A Palindrome" << endl << endl;
+	deAllocateMemory(newList);
 }
 
-void rotateListLeft(node* head, int k)
+void rotateListLeft(node*& head, int k)
 {
-
+	int length = lengthOfList(head);
+	k = k % length;
+	for(int i=1;i<=k;i++)
+	{
+		insertAtEnd(head, head->data);
+		deleteFirstNode(head);
+	}
+	cout << "List Rotated" << endl << endl;
 }
 
-void rotateListRight(node* head, int k)
+void rotateListRight(node*& head, int k)
 {
+	int length = lengthOfList(head);
+	k = k % length;
 
+	for (int i = 1; i <= k; i++)
+	{
+		node* currentHead = head;
+		while (currentHead->next != NULL)
+		{
+			currentHead = currentHead->next;
+		}
+
+		insertAtBeginning(head, currentHead->data);
+		deleteLastNode(head);
+	}
+	cout << "List Rotated" << endl << endl;
 }
 
+void displayReverse(node*& head)
+{
+	reverseList(head);
+	displayList(head);
+	reverseList(head);
+}
 void deAllocateMemory(node*& head)
 {
 	while (head != NULL)
@@ -315,111 +406,256 @@ void deleteList(node*& head)
 	deAllocateMemory(head);
 }
 
-
-int main()
+node* mergeList(node* list1, node* list2) 
 {
-	node* head = nullptr;
-	
-	insertAtEnd(head, 5);
-	insertAtEnd(head, 33);
-	insertAtEnd(head, 12);
-	insertAtEnd(head, -2);
-	insertAtEnd(head, 0);
-	insertAtEnd(head, -9);
-	insertAtEnd(head, 0);
+	if (list1 == nullptr) return list2;
+	if (list2 == nullptr) return list1;
 
-	cout << "Initial List: " << endl;
-	displayList(head);
+	node* head = list1;
+	while (list1->next != nullptr) 
+	{
+		list1 = list1->next;
+	}
+	list1->next = list2;
 
-	insertAtBeginning(head, 27);
-	insertAtBeginning(head, -222);
+	return head;
+}
 
-	cout << "Inserting Values At Head: " << endl;
-	displayList(head);
+int main() 
+{
+	vector<node*> lists; 
+	int currentListIndex = -1; 
+	int choice;
 
+	while (true) 
+	{
+		cout << "Menu:" << endl;
+		cout << "1. Create a new list" << endl;
+		cout << "2. Select a list" << endl;
+		cout << "3. Display current list" << endl;
+		cout << "4. Insert at end" << endl;
+		cout << "5. Insert at beginning" << endl;
+		cout << "6. Insert at given index" << endl;
+		cout << "7. Delete last node" << endl;
+		cout << "8. Delete first node" << endl;
+		cout << "9. Delete node at given index" << endl;
+		cout << "10. Search node" << endl;
+		cout << "11. Sort list" << endl;
+		cout << "12. Update node data by index" << endl;
+		cout << "13. Update node data by value" << endl;
+		cout << "14. Find middle node" << endl;
+		cout << "15. Find nth node from end" << endl;
+		cout << "16. Merge with another list" << endl;
+		cout << "17. Reverse list" << endl;
+		cout << "18. Check if list is palindrome" << endl;
+		cout << "19. Rotate list left" << endl;
+		cout << "20. Rotate list right" << endl;
+		cout << "21. Display list in reverse" << endl;
+		cout << "22. Delete current list" << endl;
+		cout << "23. Exit" << endl;
+		cout << "Enter your choice: ";
+		cin >> choice;
 
-	insertAtGivenIndex(head, 3, 22);
-	insertAtGivenIndex(head, 2, 17);
-	insertAtGivenIndex(head, 4, 45);
+		if (choice == 23) break;
 
-	cout << "Inserting 22 At Index 3: " << endl;
-	displayList(head);
+		if (choice == 1) {
+			node* newList = nullptr;
+			lists.push_back(newList);
+			currentListIndex = lists.size() - 1;
+			system("cls");
+			cout << "New list created and selected." << endl;
+		}
+		else if (choice == 2) 
+		{
+			system("cls");
+			int index;
+			cout << "Enter list index (0 to " << lists.size() - 1 << "): ";
+			cin >> index;
+			if (index >= 0 && index < lists.size()) 
+			{
+				currentListIndex = index;
+				cout << "List " << index << " selected." << endl;
+			}
+			else 
+			{
+				cout << "Invalid index." << endl;
+			}
+		}
+		else if (currentListIndex == -1) 
+		{
+			cout << "No list selected. Please create or select a list first." << endl;
+		}
+		else 
+		{
+			node*& currentList = lists[currentListIndex];
+			switch (choice) 
+			{
+			case 3:
+			{
+				system("cls");
+				displayList(currentList);
+				break;
+			}
+			case 4: 
+			{
+				system("cls");
+				int data;
+				cout << "Enter data: ";
+				cin >> data;
+				insertAtEnd(currentList, data);
+				break;
+			}
+			case 5: 
+			{
+				system("cls");
+				int data;
+				cout << "Enter data: ";
+				cin >> data;
+				insertAtBeginning(currentList, data);
+				break;
+			}
+			case 6: 
+			{
+				system("cls");
+				int index, data;
+				cout << "Enter index and data: ";
+				cin >> index >> data;
+				insertAtGivenIndex(currentList, index, data);
+				break;
+			}
+			case 7:
+			{
+				system("cls");
+				deleteLastNode(currentList);
+			}
+				break;
+			case 8:
+			{
+				system("cls");
+				deleteFirstNode(currentList);
+			}
+				break;
+			case 9: 
+			{
+				system("cls");
+				int index;
+				cout << "Enter index: ";
+				cin >> index;
+				deleteNodeAtGivenIndex(currentList, index);
+				break;
+			}
+			case 10: 
+			{
+				system("cls");
+				int key;
+				cout << "Enter key: ";
+				cin >> key;
+				searchNode(currentList, key);
+				break;
+			}
+			case 11: 
+			{
+				system("cls");
+				int type;
+				cout << "Enter 1 for ascending or -1 for descending: ";
+				cin >> type;
+				sortList(currentList, type);
+				break;
+			}
+			case 12: 
+			{
+				system("cls");
+				int index, data;
+				cout << "Enter index and data: ";
+				cin >> index >> data;
+				updateNodeDataByIndex(currentList, index, data);
+				break;
+			}
+			case 13: {
+				int key, data;
+				cout << "Enter key and new data: ";
+				cin >> key >> data;
+				updateNodeDataByValue(currentList, key, data);
+				break;
+			}
+			case 14:
+				findMiddleNode(currentList);
+				break;
+			case 15: {
+				int n;
+				cout << "Enter N: ";
+				cin >> n;
+				findNthNodeFromEnd(currentList, n);
+				break;
+			}
+			case 16: {
+				int index;
+				cout << "Enter index of list to merge with (0 to " << lists.size() - 1 << "): ";
+				cin >> index;
+				if (index >= 0 && index < lists.size() && index != currentListIndex) {
+					currentList = mergeList(currentList, lists[index]);
+					cout << "Lists merged." << endl;
+				}
+				else {
+					cout << "Invalid index or cannot merge with itself." << endl;
+				}
+				break;
+			}
+			case 17:
+			{
+				system("cls");
+				reverseList(currentList);
+				cout << "List Reversed" << endl << endl;
+			}
+				break;
+			case 18:
+			{
+				system("cls");
+				isListPalindrome(currentList);
+			}
+				break;
+			case 19: 
+			{
+				system("cls");
+				int k;
+				cout << "Enter k: ";
+				cin >> k;
+				rotateListLeft(currentList, k);
+				break;
+			}
+			case 20: 
+			{
+				system("cls");
+				int k;
+				cout << "Enter k: ";
+				cin >> k;
+				rotateListRight(currentList, k);
+				break;
+			}
+			case 21:
+			{
+				system("cls");
+				displayReverse(currentList);
+				break;
+			}
+			case 22:
+			{
+				system("cls");
+				deleteList(currentList);
+				cout << "Current list deleted." << endl;
+				break;
+			}
+			default:
+				cout << "Invalid choice." << endl;
+				break;
+			}
+		}
+	}
 
-	deleteLastNode(head);
-	deleteLastNode(head);
-
-	cout << "Deleting Last Two Nodes " << endl;
-	displayList(head);
-	
-	deleteFirstNode(head);
-
-	cout << "Deleting First Node: " << endl;
-	displayList(head);
-	
-	cout << "Deleting Node At Given Index (5)" << endl;
-	deleteNodeAtGivenIndex(head,5);
-	displayList(head);
-
-	cout << "Searching for 7" << endl;
-	searchNode(head, 7);
-
-	cout << "Searching for 0" << endl;
-	searchNode(head, 0);
-
-	insertAtGivenIndex(head, 0, 0);
-	insertAtGivenIndex(head, 3, 0); ///if i write this line, then it gets stuck somewhere in infinity loop, but this function is working as used above 
-	
-	cout << "Inserting 0s to check function below:" << endl;
-	displayList(head);
-
-
-	///========kal dekhun ga========================
-	/*cout << "Deleting Nodes With Specific Value(0):" << endl; 
-	deleteNodeWithSpecificValue(head, 0);
-	displayList(head);*/
-	///============================================
-
-
-	insertAtGivenIndex(head, 12, 26);
-	cout << "Inserting 26 At Index 12 Which is out of Scope(26 should not be added at end):" << endl;
-	displayList(head);
-
-	insertAtGivenIndex(head, 9, 26);
-
-	cout << "Inserting 26 At Index 9 (26 should be added at end):" << endl;
-	displayList(head);
-
-
-	cout << "Changing value at index 4 and 7 by 11: " << endl;
-	updateNodeDataByIndex(head, 4, 11);
-	updateNodeDataByIndex(head, 7, 11);
-	displayList(head);
-
-	cout << "Changing All Values of 11 by 87:" << endl;
-	updateNodeDataByValue(head, 11, 87);
-	displayList(head);
-
-	cout << "Length of List is: " << lengthOfList(head) << endl << endl;
-
-	findMiddleNode(head);
-
-	cout << "Adding Data To Make List Odd: " << endl;
-	insertAtEnd(head, 44);
-	displayList(head);
-
-
-	findMiddleNode(head);
-
-	findNthNodeFromEnd(head, 2);
-
-	cout << "Delete List: " << endl;
-	deleteList(head);
-
-
-	displayList(head);
-
-	deAllocateMemory(head);
-
+	for (auto& list : lists) 
+	{
+		deAllocateMemory(list);
+	}
 
 	return 0;
 }
