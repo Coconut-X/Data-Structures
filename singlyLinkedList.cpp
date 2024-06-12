@@ -82,6 +82,15 @@ void insertAtGivenIndex(node* &head, int index, int data)
 	currentHead->next = newNode;
 }
 
+
+int lengthOfList(node* head)
+{
+	int length = 0;
+	for (; head != NULL && (head = head->next); length++);
+
+	return length;
+}
+
 void deleteLastNode(node* &head)
 {
 	if (head == nullptr) return;
@@ -140,11 +149,15 @@ void deleteNodeAtGivenIndex(node*& head, int index)
 
 }
 
+
 void deleteNodeWithSpecificValue(node*& head,int key)
 {
 	///isko kal dekhtay hain
 	 
 }
+
+
+
 
 
 void searchNode(node* head, int key)
@@ -191,28 +204,76 @@ void reverseList(node*& head)
 
 }
 
-void updateNodeDateByIndex(node* head, int index)
+void updateNodeDataByIndex(node* head, int index, int data)
 {
+	node* currentHead = head;
+	
+	int i = 0;
+	
+	while (currentHead != NULL && i++ < index)
+	{
+		currentHead = currentHead->next;
+	}
+
+	if (currentHead == NULL ) return;
+
+	currentHead->data = data;
+}
+
+void updateNodeDataByValue(node* head, int key, int data)
+{
+	if (key == data) return; ///else it will go in infinite loop
+
+	int i = 0;
+	node* currentHead = head;
+	while (currentHead != NULL )
+	{
+		if (currentHead->data == key)
+		{
+			updateNodeDataByIndex(head, i, data);
+			//currentHead = head;
+		}
+		i++;
+		currentHead = currentHead->next;
+	}
 
 }
 
-void updateNodeDateByValue(node* head, int key)
-{
-
-}
-
-void lengthOfList(node* head)
-{
-
-}
 
 void findMiddleNode(node* head)
 {
+	if (head == NULL)
+	{
+		cout << "List Is Empty..!" << endl << endl;
+		return;
+	}
+
+	int length = lengthOfList(head);
+	int i = 0;
+	for (; i < length / 2 && (head=head->next); i++);
+
+	if (length & 1)
+	{
+		cout << "Middle Nodes Are: " << head->data << ", " << head->next->data << endl << endl;
+		return;
+	}
+
+	cout << "Middle Node is : " << head->data << endl << endl;
 
 }
 
-void findNthNodeFromEnd(node* head)
+void findNthNodeFromEnd(node* head,int N)
 {
+	if (head == NULL)
+	{
+		cout << "List Is Empty!" << endl << endl;
+		return;
+	}
+
+	int length = lengthOfList(head);
+	for (int i = 0; i < length - N && (head = head->next); i++);
+
+	cout << N << "th Node From End is:  " << head->data << endl << endl;
 
 }
 
@@ -244,8 +305,14 @@ void deAllocateMemory(node*& head)
 		head = head->next;
 		delete temp;
 	}
-
 	head = nullptr;
+
+	cout << "Memory DeAllocated " << endl;
+}
+
+void deleteList(node*& head)
+{
+	deAllocateMemory(head);
 }
 
 
@@ -323,8 +390,35 @@ int main()
 	displayList(head);
 
 
-	deAllocateMemory(head);
+	cout << "Changing value at index 4 and 7 by 11: " << endl;
+	updateNodeDataByIndex(head, 4, 11);
+	updateNodeDataByIndex(head, 7, 11);
+	displayList(head);
 
+	cout << "Changing All Values of 11 by 87:" << endl;
+	updateNodeDataByValue(head, 11, 87);
+	displayList(head);
+
+	cout << "Length of List is: " << lengthOfList(head) << endl << endl;
+
+	findMiddleNode(head);
+
+	cout << "Adding Data To Make List Odd: " << endl;
+	insertAtEnd(head, 44);
+	displayList(head);
+
+
+	findMiddleNode(head);
+
+	findNthNodeFromEnd(head, 2);
+
+	cout << "Delete List: " << endl;
+	deleteList(head);
+
+
+	displayList(head);
+
+	deAllocateMemory(head);
 
 
 	return 0;
