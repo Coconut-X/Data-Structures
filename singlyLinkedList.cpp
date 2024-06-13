@@ -8,10 +8,8 @@ class node{
 	node* next;
 };
 
-
 void displayList(node* head)
 {
-
 	if (head == nullptr) 
 	{
 		cout << "The list is empty." << endl;
