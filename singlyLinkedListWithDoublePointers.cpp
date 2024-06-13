@@ -465,6 +465,22 @@ void expandListArray(node**& lists, int& capacity)
 	capacity = newCapacity;
 }
 
+
+node* mergeList(node* list1, node* list2)
+{
+	if (list1 == nullptr) return list2;
+	if (list2 == nullptr) return list1;
+
+	node* head = list1;
+	while (list1->next != nullptr)
+	{
+		list1 = list1->next;
+	}
+	list1->next = list2;
+
+	return head;
+}
+
 int main() 
 {
 	int capacity = 2; 
