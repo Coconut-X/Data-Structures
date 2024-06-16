@@ -17,9 +17,9 @@ void preOrder(node* root)
 	cout << root->data << "  ";
 	preOrder(root->left);
 	preOrder(root->right);							///=================================///
-}													///	 jahan pr "current"				///
-													///	 aye ga wahan data				///
-/// left-current-right								///	 print krna ha, these 3 are DFS ///
+}										///  jahan pr "current"	    	    ///
+										///  aye ga wahan data	    	    ///
+/// left-current-right								///  print krna ha, these 3 are DFS ///
 void inOrder(node* root)							///=================================///
 {													
 	if (root == nullptr) return;
