@@ -59,18 +59,28 @@ public:
 	}
 
 
-	void add(int key)
-	{
+	
+	void add(int key) {
 		int index = hash(key, size);
 		int* temp = new int[rowLength[index] + 1];
-		for (int i = 0; i < rowLength[index]; i++) {
+		int i = 0;
+		//sort
+		while (i < rowLength[index] && table[index][i] < key) {
 			temp[i] = table[index][i];
+			i++;
 		}
-		temp[rowLength[index]] = key;
+
+		temp[i] = key;  
+		while (i < rowLength[index]) {
+			temp[i + 1] = table[index][i];
+			i++;
+		}
+
 		delete[] table[index];
 		table[index] = temp;
-		rowLength[index] += 1;
+		rowLength[index]++;
 	}
+
 
 	~HashTable() {
 		for (int i = 0; i < size; i++) {
