@@ -47,13 +47,6 @@ public:
 					postfix[++postTop] = stackArray[top--];///pichlay wala pop ho Kr postfix me agya
 				}
 				
-
-				///agr new wali ki precedence zyada ho to sirf push krna ha 
-				else if (stackArray[top] == '-' && a == '/' || stackArray[top] == '+' && a == '/' || stackArray[top] == '-' && a == '*' || stackArray[top] == '+' && a == '*')
-				{
-					stackArray[top++] = a;
-				}
-				
 				stackArray[++top] = a; ///new operator ko hamesha push krna ha except when ")"
 			}
 
